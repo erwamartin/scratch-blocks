@@ -621,12 +621,18 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree) {
     categories.push(child);
   }
 
+  var sortedCategories = categories;
+  if (this.options.blockCategories) {
+    sortedCategories = this.options.blockCategories.map(function(categoryId) {
+      return categories.find(function(category) {
+        return category.getAttribute('id') === categoryId;
+      });
+    });
+  }
+  
   // Create a single column of categories
-  for (var i = 0; i < categories.length; i++) {
-    var child = categories[i];
-    if (this.options.blockCategories && this.options.blockCategories.indexOf(child.getAttribute('id')) === -1) {
-      continue;
-    }
+  for (var i = 0; i < sortedCategories.length; i++) {
+    var child = sortedCategories[i];
     var row = goog.dom.createDom('div', 'scratchCategoryMenuRow');
     this.table.appendChild(row);
     if (child) {
