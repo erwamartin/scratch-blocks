@@ -131,7 +131,7 @@ Blockly.Toolbox.prototype.init = function() {
       }, /*opt_noCaptureIdentifier*/ false, /*opt_noPreventDefault*/ true);
 
   this.createFlyout_();
-  this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
+  this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv, workspace.options);
   this.populate_(workspace.options.languageTree);
   this.position();
 };
@@ -574,12 +574,13 @@ Blockly.Toolbox.prototype.setSelectedItemFactory = function(item) {
  * @param {Element} parentHtml The containing html div.
  * @constructor
  */
-Blockly.Toolbox.CategoryMenu = function(parent, parentHtml) {
+Blockly.Toolbox.CategoryMenu = function(parent, parentHtml, options = {}) {
   this.parent_ = parent;
   this.height_ = 0;
   this.parentHtml_ = parentHtml;
   this.createDom();
   this.categories_ = [];
+  this.options = options;
 };
 
 /**
@@ -623,6 +624,9 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree) {
   // Create a single column of categories
   for (var i = 0; i < categories.length; i++) {
     var child = categories[i];
+    if (this.options.blockCategories && this.options.blockCategories.indexOf(child.getAttribute('id')) === -1) {
+      continue;
+    }
     var row = goog.dom.createDom('div', 'scratchCategoryMenuRow');
     this.table.appendChild(row);
     if (child) {
