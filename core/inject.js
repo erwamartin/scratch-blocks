@@ -55,7 +55,14 @@ Blockly.inject = function(container, opt_options) {
     throw 'Error: container is not in current document.';
   }
   var options = new Blockly.Options(opt_options || {});
-  var subContainer = goog.dom.createDom('div', 'injectionDiv');
+  var classes = ['injectionDiv'];
+  if (opt_options.compact) {
+    classes.push('compact');
+  }
+  if (opt_options.blockCategoriesCount) {
+    classes.push(`blockCategories_${opt_options.blockCategoriesCount}`);
+  }
+  var subContainer = goog.dom.createDom('div', classes);
   container.appendChild(subContainer);
 
   // Open the Field text cache and leave it open. See this issue for more information
