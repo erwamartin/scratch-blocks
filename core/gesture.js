@@ -301,8 +301,7 @@ Blockly.Gesture.prototype.updateFromEvent_ = function(e) {
  * @private
  */
 Blockly.Gesture.prototype.updateDragDelta_ = function(currentXY) {
-  this.currentDragDeltaXY_ = goog.math.Coordinate.difference(currentXY,
-      this.mouseDownXY_);
+  this.currentDragDeltaXY_ = goog.math.Coordinate.difference(currentXY, this.mouseDownXY_);
 
   if (!this.hasExceededDragRadius_) {
     var currentDragDelta = goog.math.Coordinate.magnitude(

@@ -296,6 +296,7 @@ Blockly.Flyout.prototype.createDom = function(tagName) {
   this.svgBackground_ = Blockly.utils.createSvgElement('path',
       {'class': 'blocklyFlyoutBackground'}, this.svgGroup_);
   this.svgGroup_.appendChild(this.workspace_.createDom());
+  
   return this.svgGroup_;
 };
 
@@ -881,9 +882,16 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(oldBlock) {
   // corner of the injection div.
   var mainOffsetPixels = targetWorkspace.getOriginOffsetInPixels();
 
+  // Find lando customization: as the blocks menu is now on top of the flyout
+  // We need to add an offset to the block position to make it appear in the right place
+  var yTranslation = 0;
+  if (Array.isArray(this.workspace_.options.blockCategories)) {
+    yTranslation = this.workspace_.options.blockCategories.length > 4 ? 100 : 50;
+  }
+
   // The offset in pixels between the flyout workspace's origin and the upper
   // left corner of the injection div.
-  var flyoutOffsetPixels = this.workspace_.getOriginOffsetInPixels();
+  var flyoutOffsetPixels = this.workspace_.getOriginOffsetInPixels().translate(0, yTranslation);
 
   // The position of the old block in flyout workspace coordinates.
   var oldBlockPosWs = oldBlock.getRelativeToSurfaceXY();
